@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvHistoricalFigureName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Leonardo da Vinci"/>
+
+    <TextView
+        android:id="@+id/tvBirthdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/tvHistoricalFigureName"
+        app:layout_constraintStart_toStartOf="@id/tvHistoricalFigureName"
+        app:layout_constraintTop_toBottomOf="@id/tvHistoricalFigureName"
+        tools:text="Birthdate: April 15, 1452"/>
+
+    <TextView
+        android:id="@+id/tvDied"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/tvBirthdate"
+        app:layout_constraintStart_toStartOf="@id/tvBirthdate"
+        app:layout_constraintTop_toBottomOf="@id/tvBirthdate"
+        tools:text="Died: March 15, 44 BC"/>
+
+    <TextView
+        android:id="@+id/tvOccupation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvDied"
+        app:layout_constraintStart_toStartOf="@+id/tvDied"
+        app:layout_constraintTop_toBottomOf="@+id/tvDied"
+        tools:text="Occupation: Artist, Inventor, Scientist"/>
+
+    <TextView
+        android:id="@+id/tvContribution"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/tvOccupation"
+        app:layout_constraintStart_toStartOf="@id/tvOccupation"
+        app:layout_constraintTop_toBottomOf="@id/tvOccupation"
+        tools:text="Contribution: Mona Lisa, The Last Supper"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
