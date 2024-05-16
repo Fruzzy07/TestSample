@@ -5,41 +5,41 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.historicalfigures.databinding.ItemHistoricalFigureBinding
+import com.example.historicalfigures.databinding.ItemCountryBinding
 
-class HistoricalFigureAdapter : ListAdapter<HistoricalFigure, HistoricalFigureAdapter.HistoricalFigureViewHolder>(HistoricalFigureDiffCallback) {
 
-    object HistoricalFigureDiffCallback : DiffUtil.ItemCallback<HistoricalFigure>() {
-        override fun areItemsTheSame(oldItem: HistoricalFigure, newItem: HistoricalFigure): Boolean {
+class HistoricalFigureAdapter : ListAdapter<Country, HistoricalFigureAdapter.CountryViewHolder>(CountryDiffCallback) {
+
+    object CountryDiffCallback : DiffUtil.ItemCallback<Country>() {
+        override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
             return oldItem.name == newItem.name
         }
 
-        override fun areContentsTheSame(oldItem: HistoricalFigure, newItem: HistoricalFigure): Boolean {
+        override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
             return oldItem == newItem
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoricalFigureViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemHistoricalFigureBinding.inflate(layoutInflater, parent, false)
-        return HistoricalFigureViewHolder(binding)
+        val binding = ItemCountryBinding.inflate(layoutInflater, parent, false) // Use ItemCountryBinding here
+        return CountryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HistoricalFigureViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         val historicalFigure = getItem(position)
         holder.bind(historicalFigure)
     }
 
-    class HistoricalFigureViewHolder(private val binding: ItemHistoricalFigureBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CountryViewHolder(private val binding: ItemCountryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(historicalFigure: HistoricalFigure) {
+        fun bind(country: Country) {
             with(binding) {
-                tvHistoricalFigureName.text = historicalFigure.name
-                tvBirthdate.text = "Birthdate: ${historicalFigure.info.born ?: "Unknown"}"
-                tvDied.text = "Died: ${historicalFigure.info.died ?: "Unknown"}"
-                tvOccupation.text = "Occupation: ${historicalFigure.info.occupation?.joinToString(", ") ?: "Unknown"}"
-                tvContribution.text = "Contribution: ${historicalFigure.info.notableWork?.joinToString(", ") ?: "Unknown"}"
+                tvCountryName.text = country.name
+                tvLifeExpectancyMale.text = "Male Life Expectancy: ${country.life_expectancy_male}"
+                tvLifeExpectancyFemale.text = "Female Life Expectancy: ${country.life_expectancy_female}"
             }
         }
     }
 }
+
