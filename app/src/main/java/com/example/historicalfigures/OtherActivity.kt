@@ -3,6 +3,7 @@ package com.example.historicalfigures
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -92,6 +93,19 @@ class OtherActivity : AppCompatActivity() {
                             recyclerView.layoutManager = GridLayoutManager(this@OtherActivity, 12) // 12 columns
                             monthAdapter = MonthAdapter(this@OtherActivity, monthsGone, totalMonths, detailActivityLauncher)
                             recyclerView.adapter = monthAdapter
+
+                            val yearsContainer = findViewById<LinearLayout>(R.id.yearsContainer)
+                            val yearsCount = (totalMonths + 11) / 12  // Округляем в большую сторону, чтобы покрыть все месяцы
+                            for (i in 0 until yearsCount) {
+                                val yearTextView = TextView(this@OtherActivity)
+                                yearTextView.text = i.toString()
+                                yearTextView.textSize = 16f
+                                yearTextView.layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    0,
+                                    1f
+                                )
+                                yearsContainer.addView(yearTextView)}
                         } else {
                             Toast.makeText(this@OtherActivity, "Country not found or data unavailable", Toast.LENGTH_SHORT).show()
                         }
@@ -107,6 +121,10 @@ class OtherActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
+
 
 
 

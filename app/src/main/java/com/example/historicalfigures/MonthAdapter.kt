@@ -47,6 +47,15 @@ class MonthAdapter(
         } else {
             monthView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
         }
+
+        // Проверка, является ли текущий элемент первым в строке
+        val isFirstInRow = position % 12 == 0
+        if (isFirstInRow) {
+            holder.rowNumber.visibility = View.VISIBLE
+            holder.rowNumber.text = (position / 12).toString()
+        } else {
+            holder.rowNumber.visibility = View.INVISIBLE
+        }
         // Adding margin after every 4th element in each row (except the last row)
         val layoutParams = monthView.layoutParams as ViewGroup.MarginLayoutParams
         if (position % 12 >= 4 && position % 12 < 8) {
@@ -64,6 +73,7 @@ class MonthAdapter(
     inner class MonthViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val monthLabel: TextView = itemView.findViewById(R.id.monthLabel)
         val monthView: View = itemView.findViewById(R.id.monthView)
+        val rowNumber: TextView = itemView.findViewById(R.id.rowNumber)
     }
 
 
