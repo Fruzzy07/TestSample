@@ -3,6 +3,7 @@ package com.example.historicalfigures
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -105,6 +106,7 @@ class OtherActivity : AppCompatActivity() {
                                     0,
                                     1f
                                 )
+                                yearTextView.id = View.generateViewId()
                                 yearsContainer.addView(yearTextView)}
                         } else {
                             Toast.makeText(this@OtherActivity, "Country not found or data unavailable", Toast.LENGTH_SHORT).show()
