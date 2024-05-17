@@ -63,6 +63,7 @@ class OtherActivity : AppCompatActivity() {
             val monthsDifference = currentMonth - dobMonth
             val monthsGone = yearsDifference * 12 + monthsDifference
 
+
             textViewCountryName = findViewById(R.id.textview_country_name)
             textViewLifeExpectancy = findViewById(R.id.textview_life_expectancy)
 
@@ -84,6 +85,8 @@ class OtherActivity : AppCompatActivity() {
                             textViewLifeExpectancy.text = "Life Expectancy: $lifeExpectancy years"
 
                             val totalMonths = (lifeExpectancy * 12).toInt()
+
+
 
                             val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
                             recyclerView.layoutManager = GridLayoutManager(this@OtherActivity, 12) // 12 columns
