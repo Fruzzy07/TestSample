@@ -1,6 +1,5 @@
 package com.example.historicalfigures
 
-
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -38,5 +37,6 @@ class DetailActivity : AppCompatActivity() {
         finish()
     }
 }
+
 
 

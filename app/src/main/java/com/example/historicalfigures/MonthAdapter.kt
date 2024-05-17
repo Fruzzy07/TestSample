@@ -6,9 +6,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.activity.result.ActivityResultLauncher
 
 class MonthAdapter(
     private val context: Context,
@@ -17,6 +17,7 @@ class MonthAdapter(
     private val detailActivityLauncher: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<MonthAdapter.MonthViewHolder>() {
     private val monthStatuses = Array(totalMonths) { "DEFAULT" }
+
     class MonthViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val monthView: View = itemView.findViewById(R.id.monthView)
     }
@@ -27,7 +28,6 @@ class MonthAdapter(
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
-
         holder.itemView.setBackgroundColor(getColorForStatus(monthStatuses[position]))
 
         holder.itemView.setOnClickListener {
@@ -43,7 +43,7 @@ class MonthAdapter(
             monthView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
         }
         // Adding margin after every 4th element in each row (except the last row)
-        val layoutParams =  monthView.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = monthView.layoutParams as ViewGroup.MarginLayoutParams
         if (position % 12 >= 4 && position % 12 < 8) {
             layoutParams.bottomMargin = 16 // Adding bottom margin after every 4th square
         } else {
@@ -69,9 +69,8 @@ class MonthAdapter(
             else -> Color.GRAY
         }
     }
-
-
 }
+
 
 
 
