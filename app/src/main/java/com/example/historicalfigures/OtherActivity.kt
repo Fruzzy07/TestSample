@@ -1,22 +1,15 @@
 package com.example.historicalfigures
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.historicalfigures.Country
-import com.example.historicalfigures.R
-import com.example.historicalfigures.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import androidx.recyclerview.widget.GridLayoutManager
 import java.util.Calendar
-
 
 class OtherActivity : AppCompatActivity() {
     private lateinit var textViewCountryName: TextView
@@ -48,45 +41,44 @@ class OtherActivity : AppCompatActivity() {
             val monthsDifference = currentMonth - dobMonth
             val monthsGone = yearsDifference * 12 + monthsDifference
 
+            textViewCountryName = findViewById(R.id.textview_country_name)
+            textViewLifeExpectancy = findViewById(R.id.textview_life_expectancy)
 
+            // Retrieve the selected country and gender from SharedPreferences
+            val selectedCountry = sharedPreferences.getString("country", "")
+            val selectedGender = sharedPreferences.getString("gender", "")
 
-        textViewCountryName = findViewById(R.id.textview_country_name)
-        textViewLifeExpectancy = findViewById(R.id.textview_life_expectancy)
+            // Make API call to fetch life expectancy data
+            Repository.api.getCountryByName(selectedCountry ?: "").enqueue(object : Callback<List<Country>> {
+                override fun onResponse(call: Call<List<Country>>, response: Response<List<Country>>) {
+                    if (response.isSuccessful) {
+                        val countries = response.body()
+                        // Check if countries list is not empty and contains data for the selected country
+                        if (!countries.isNullOrEmpty() && countries.size == 1) {
+                            val country = countries[0]
+                            val countryName = country.name
+                            val lifeExpectancy = if (selectedGender == "Male") country.life_expectancy_male else country.life_expectancy_female
+                            textViewCountryName.text = "Country Name: $countryName"
+                            textViewLifeExpectancy.text = "Life Expectancy: $lifeExpectancy years"
 
-        // Retrieve the selected country and gender from SharedPreferences
-        val selectedCountry = sharedPreferences.getString("country", "")
-        val selectedGender = sharedPreferences.getString("gender", "")
+                            val totalMonths = (lifeExpectancy * 12).toInt()
 
-        // Make API call to fetch life expectancy data
-        Repository.api.getCountryByName(selectedCountry ?: "").enqueue(object : Callback<List<Country>> {
-            override fun onResponse(call: Call<List<Country>>, response: Response<List<Country>>) {
-                if (response.isSuccessful) {
-                    val countries = response.body()
-                    // Check if countries list is not empty and contains data for the selected country
-                    if (!countries.isNullOrEmpty() && countries.size == 1) {
-                        val country = countries[0]
-                        val countryName = country.name
-                        val lifeExpectancy = if (selectedGender == "Male") country.life_expectancy_male else country.life_expectancy_female
-                        textViewCountryName.text = "Country Name: $countryName"
-                        textViewLifeExpectancy.text = "Life Expectancy: $lifeExpectancy years"
-
-                        val totalMonths = (lifeExpectancy * 12).toInt()
-
-                        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-                        recyclerView.layoutManager = GridLayoutManager(this@OtherActivity, 12) // 12 columns
-                        recyclerView.adapter = MonthAdapter(this@OtherActivity, monthsGone, totalMonths)
+                            val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+                            recyclerView.layoutManager = GridLayoutManager(this@OtherActivity, 12) // 12 columns
+                            recyclerView.adapter = MonthAdapter(this@OtherActivity, monthsGone, totalMonths)
+                        } else {
+                            Toast.makeText(this@OtherActivity, "Country not found or data unavailable", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                        Toast.makeText(this@OtherActivity, "Country not found or data unavailable", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@OtherActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this@OtherActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            override fun onFailure(call: Call<List<Country>>, t: Throwable) {
-                Toast.makeText(this@OtherActivity, "Failed to fetch data: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+                override fun onFailure(call: Call<List<Country>>, t: Throwable) {
+                    Toast.makeText(this@OtherActivity, "Failed to fetch data: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 }
+

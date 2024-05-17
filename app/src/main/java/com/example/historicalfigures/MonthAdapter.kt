@@ -1,6 +1,7 @@
 package com.example.historicalfigures
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,13 @@ class MonthAdapter(private val context: Context, private val monthsGone: Int, pr
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("MONTH_INDEX", position)
+            context.startActivity(intent)
+        }
+
         val monthView = holder.monthView
         if (position < monthsGone) {
             monthView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.darker_gray))
@@ -34,9 +42,11 @@ class MonthAdapter(private val context: Context, private val monthsGone: Int, pr
             }
             monthView.layoutParams = layoutParams
         }
+
         override fun getItemCount(): Int {
             return totalMonths
         }
+
 
     }
 
