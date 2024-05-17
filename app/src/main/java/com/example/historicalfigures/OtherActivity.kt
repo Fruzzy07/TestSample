@@ -1,8 +1,12 @@
 package com.example.historicalfigures
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,10 +18,28 @@ import java.util.Calendar
 class OtherActivity : AppCompatActivity() {
     private lateinit var textViewCountryName: TextView
     private lateinit var textViewLifeExpectancy: TextView
+    private lateinit var monthAdapter: MonthAdapter
+
+    private lateinit var detailActivityLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other)
+
+        detailActivityLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    val monthIndex = data.getIntExtra("MONTH_INDEX", -1)
+                    val status = data.getStringExtra("STATUS")
+                    if (monthIndex != -1 && status != null) {
+                        monthAdapter.updateMonthStatus(monthIndex, status)
+                    }
+                }
+            }
+        }
 
         val calendar = Calendar.getInstance()
         val currentYear = calendar.get(Calendar.YEAR)
@@ -65,7 +87,8 @@ class OtherActivity : AppCompatActivity() {
 
                             val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
                             recyclerView.layoutManager = GridLayoutManager(this@OtherActivity, 12) // 12 columns
-                            recyclerView.adapter = MonthAdapter(this@OtherActivity, monthsGone, totalMonths)
+                            monthAdapter = MonthAdapter(this@OtherActivity, monthsGone, totalMonths, detailActivityLauncher)
+                            recyclerView.adapter = monthAdapter
                         } else {
                             Toast.makeText(this@OtherActivity, "Country not found or data unavailable", Toast.LENGTH_SHORT).show()
                         }
@@ -81,4 +104,7 @@ class OtherActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
 
